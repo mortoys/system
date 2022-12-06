@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+data/
+database/local.py
+notebook/
+old/
+strategy/
 
 # C extensions
 *.so
