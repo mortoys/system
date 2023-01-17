@@ -29,7 +29,7 @@ class TushareCBShare(Dataset, TushareMixin):
         Column('total_shares', Float, comment='转股后总股本'),
     ]
 
-    schedule_start_date = '2000-01-01'
+    schedule_start_date = '2006-08-10'
     schedule_delay = timedelta(days=0)
     schedule_time = time(0, 0)
 

@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime, timedelta, time
+from datetime import date, datetime, timedelta, time
 from sqlalchemy import Column, String, Integer, DateTime, Date, Numeric, Float, Boolean
 
 from engine import DailyRefresh
@@ -31,11 +31,14 @@ class TushareIndexClassify(DailyRefresh, TushareMixin):
             try:
                 print(str(index) + ' ' + ll.iloc[index]['index_code'] + ' ' + ll.iloc[index]['industry_name'])
                 df = self.api.index_member(index_code=ll.iloc[index]['index_code'])
+                df = df.drop('is_new', axis=1)
                 df['industry_name'] = ll.iloc[index]['industry_name']
                 data = pd.concat([ data, df ])
                 index += 1
             except Exception as e:
                 print(str(e))
+
+        data = data.drop_duplicates(['index_code','con_code'])
 
         data = data.rename(columns={
             "con_code": "ts_code",
@@ -43,3 +46,8 @@ class TushareIndexClassify(DailyRefresh, TushareMixin):
         })
 
         return data
+
+if __name__ == '__main__':
+    updater = TushareIndexClassify()
+
+    updater.update(date=date.today().isoformat())

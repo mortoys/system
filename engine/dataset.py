@@ -1,5 +1,6 @@
 from datetime import datetime
 import pandas as pd
+import time
 from sqlalchemy import Table, Column, DateTime
 
 from database import track, logger, meta
@@ -71,6 +72,10 @@ class Dataset(metaclass=Register):
                 logger.red(str(e)[:1000])
                 logger.error(self.name, str(e)[:1000], self.params)
                 self.status = 'error'
+
+                if e.args[0].startswith('抱歉，您每分钟最多访问该接口'):
+                    logger.yellow('Frequency limitation')
+                    time.sleep(20)
 
         if self.status == 'success':
 

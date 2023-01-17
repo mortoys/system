@@ -65,7 +65,7 @@ class DailyUpdate(DailyDataset):
 
     def insertDb(self):
         upsert(
-            engine=meta.bind,
+            con=meta.bind,
             df=self.dataframe,
             table_name=self.name,
             if_row_exists='update',

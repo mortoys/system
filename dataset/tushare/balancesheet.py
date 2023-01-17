@@ -180,9 +180,10 @@ if __name__ == '__main__':
     quarters = ['0331', '0630', '0930', '1231']
     data = pd.DataFrame()
 
-    for year in years:
-        for quarter in quarters:
-            period = str(year) + quarter
+    # for year in years:
+    #     for quarter in quarters:
+    #         period = str(year) + quarter
+    for period in ['20210930','20211231','20220331','20220630','20220930','20221231',]:
+        updater.update(date=date.today().isoformat(), period=period)
+        while updater.status == 'error':
             updater.update(date=date.today().isoformat(), period=period)
-            while updater.status == 'error':
-                updater.update(date=date.today().isoformat(), period=period)

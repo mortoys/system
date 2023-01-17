@@ -132,14 +132,6 @@ class TushareFinaIndicator(DailyUpdate, TushareMixin):
         Column('update_flag', String)
     ] + [Column(col, Float) for col in cols]
 
-    def current_period(self):
-        years = list(range(2000, 2030))
-        quarters = ['03-31', '06-30', '09-30', '12-31']
-
-        times = [date.fromisoformat(str(year) + '-' + quarter) for year in years for quarter in quarters]
-        cond = pd.Series(map(lambda d: d < date.today(), times))
-        return times[np.argmin(cond)-1].strftime("%Y%m%d")
-
     def fetch(self):
         period = self.params['period'] if 'period' in self.params else self.current_period()
         logger.yellow('PERIOD: ' + period)
@@ -158,9 +150,10 @@ if __name__ == '__main__':
     quarters = ['0331', '0630', '0930', '1231']
     data = pd.DataFrame()
 
-    for year in years:
-        for quarter in quarters:
-            period = str(year) + quarter
+    # for year in years:
+    #     for quarter in quarters:
+    #         period = str(year) + quarter
+    for period in ['20210930','20211231','20220331','20220630','20220930','20221231',]:
+        finaIndicator.update(date=date.today().isoformat(), period=period)
+        while finaIndicator.status == 'error':
             finaIndicator.update(date=date.today().isoformat(), period=period)
-            while finaIndicator.status == 'error':
-                finaIndicator.update(date=date.today().isoformat(), period=period)
