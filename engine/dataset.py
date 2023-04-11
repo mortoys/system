@@ -73,7 +73,7 @@ class Dataset(metaclass=Register):
                 logger.error(self.name, str(e)[:1000], self.params)
                 self.status = 'error'
 
-                if e.args[0].startswith('抱歉，您每分钟最多访问该接口'):
+                if hasattr(e.args[0], 'startswith') and e.args[0].startswith('抱歉，您每分钟最多访问该接口'):
                     logger.yellow('Frequency limitation')
                     time.sleep(20)
 

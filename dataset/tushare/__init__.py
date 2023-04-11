@@ -35,11 +35,11 @@ from .cashflow import TushareCashflow
 from .balancesheet import TushareBalancesheet
 
 from .express import TushareExpress
-from .forecast import TushareForecast
+# from .forecast import TushareForecast
 
 from .fund_basic import TushareFundBasic
 # from .fund_portfolio import TushareFundPortfolio
 from .fund_nav import TushareFundNav
-from .fund_share import TushareFundShare
+# from .fund_share import TushareFundShare
 
 # from .us_daily import TushareUSDaily

@@ -37,6 +37,7 @@ class TushareCBBasic(DailyRefresh, TushareMixin):
         Column('first_conv_price', Float, comment='初始转股价'),
         Column('conv_price', Float, comment='最新转股价'),
         Column('rate_clause', String, comment='利率说明'),
+        Column('conv_stop_date', String, comment='停止转股日(提前到期)'),
 
         # Column('put_clause', String, comment='赎回条款'),
         # Column('maturity_put_price', String, comment='到期赎回价格(含税)'),

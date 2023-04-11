@@ -47,7 +47,7 @@ plotnine = "^0.10.1"
 # notion-client = "^0.9.0"
 
 setuptools = "~57.5.0"
-demjson = "2.2.4"
+# demjson = "2.2.4"
 
 [build-system]
 requires = ["poetry-core"]

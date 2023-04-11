@@ -13,20 +13,25 @@ from database.conf import meta, engine
 data_path = os.path.join(os.path.dirname(__file__), '../data')
 meta_path = os.path.join(os.path.dirname(__file__), '../data/meta')
 
-def load_table(table_name):
+def load_table(table_name, cond=None):
     table = meta.tables[table_name]
-    data = pd.read_sql(select(table), engine)
+    if cond != None:
+        query = select(table).where(cond)
+    else:
+        query = select(table)
+    data = pd.read_sql(query, engine)
     return data
 
 class Backup:
     domain = ''
     data_path = data_path
 
-    def __init__(self, table_name, file_name, domain='tushare', date_col='trade_date'):
+    def __init__(self, table_name, file_name, cond=None, domain='tushare', date_col='trade_date'):
         self.table_name = table_name
         self.file_name = file_name
         self.domain = domain
         self.date_col = date_col
+        self.cond = cond
 
         self.path = os.path.join(self.data_path, 'backup', self.domain, self.file_name)
         self.meta_path = os.path.join(meta_path, 'backup.toml')
@@ -77,7 +82,7 @@ class Backup:
         self.load_meta()
 
     def load_data(self):
-        self.data = load_table(self.table_name)
+        self.data = load_table(self.table_name, cond = self.cond)
 
     def dump(self):
         if os.path.exists(self.path):
@@ -109,9 +114,13 @@ class BackupIncr(Backup):
     def load_data_incr(self):
         if 'data_update_time' in self.meta_data:
             table = meta.tables[self.table_name]
-            self.data = pd.read_sql(
-                select(table)
-                    .where(column('_utime') > self.meta_data['data_update_time']), engine)
+
+            query = select(table).where(column('trade_date') > self.meta_data['end_date'])
+
+            if self.cond != None:
+                query = query.where(self.cond)
+            
+            self.data = pd.read_sql(query, engine)
         else:
             self.load_data()
 

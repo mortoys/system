@@ -38,4 +38,4 @@ class TushareStockVX(DailyDataset, TushareMixin):
         return pd.concat([
             self.api.stock_vx(trade_date=self.ts_date),
             self.api.stock_vx(trade_date=self.ts_date, offset=2000)
-        ])
+        ]).drop_duplicates(['ts_code', 'trade_date'])
